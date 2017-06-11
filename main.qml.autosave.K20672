@@ -1,0 +1,547 @@
+import QtQuick 2.8
+import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.0
+import QtQuick.Window 2.0
+import QtGraphicalEffects 1.0
+import Qt.labs.platform 1.0
+
+ApplicationWindow {
+    id: applicationWindow
+    visible: true
+    width: 840
+    height: 680
+    title: qsTr("PokeManager")
+
+    Page {
+        id: window
+        property int sideBarWidth: 300
+        property int showSideBar: -sideBarWidth
+        property int currentPage: 1
+        height: parent.height
+        width: parent.width
+        function toggleSideBar() {
+            if(window.showSideBar == -sideBarWidth)
+            {  window.showSideBar = 0; }
+            else { window.showSideBar = -sideBarWidth; }
+        }
+
+        // MAIN BAR
+        Rectangle {
+            id: mainBar
+            color: "#FFFFFF"
+            height: 60
+            width: parent.width
+            anchors.top: parent.top
+            z:3
+
+            Image {
+                id: menuButton
+                anchors.left: parent.left
+                anchors.leftMargin: 20
+                anchors.verticalCenter: parent.verticalCenter
+                height: 23
+                width: 23
+                source: "qrc:/gui/icons/Menu-50.png"
+                MouseArea {
+                    hoverEnabled: true
+                    anchors.fill: parent
+                    onEntered: menuButton.source = "qrc:/gui/icons/Menu Filled-50.png"
+                    onExited: menuButton.source = "qrc:/gui/icons/Menu-50.png"
+                }
+            }
+
+
+            Text {
+                anchors.centerIn: parent
+                text: "PokeManager"
+                font.pixelSize: 20
+                font.family: "Quicksand"
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: window.toggleSideBar();
+            }
+        }
+        DropShadow {
+            anchors.fill: mainBar
+            horizontalOffset: 0
+            verticalOffset: 1
+            radius: 8.0
+            samples: 17
+            color: "#22000000"
+            source: mainBar
+            z: 2
+        }
+
+        SideBar
+        {
+            id: sideBar
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: window.sideBarWidth
+            visible: true
+            x: window.showSideBar
+            z:10
+            // ANIMATION
+            Behavior on x { NumberAnimation { duration: 300; easing.type: Easing.OutQuart } }
+        }
+        // Top shadow
+        DropShadow {
+            anchors.top: sideBar.top
+            anchors.right: sideBar.right
+            anchors.bottom: mainBar.bottom
+            anchors.left: sideBar.left
+            horizontalOffset: 1
+            verticalOffset: 0
+            radius: 5.0
+            samples: 17
+            color: "#22000000"
+            source: sideBar
+            z: 8
+        }
+        //  Bottom shadow
+        DropShadow {
+            anchors.top: mainBar.bottom
+            anchors.right: sideBar.right
+            anchors.bottom: sideBar.bottom
+            anchors.left: sideBar.left
+            horizontalOffset: 2
+            verticalOffset: 1
+            radius: 8.0
+            samples: 17
+            color: "#22000000"
+            source: sideBar
+            z: 5
+        }
+
+
+
+
+        // PAGE WINDOW
+        Rectangle {
+            id: view
+            z:1
+            color: "#F6F7FB"
+            anchors.top: mainBar.bottom
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            width: parent.width
+
+
+            // Quick Nav
+            Row {
+                id: quickNav
+                height: 30
+                anchors.topMargin: 30
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 0
+                z: 0
+
+                // Button1
+                Rectangle {
+                    id: myRect1
+                    property bool active: true
+                    height: 30
+                    width: 120
+                    color: "Transparent"
+                    z: 7
+                    Rectangle {
+                        id: roundRect
+                        color: myRect1.active == true? "#d6d6d6" : "#FFFFFF"
+                        height: 30
+                        width: 120
+                        radius: 2
+                        z: 7
+                        Image {
+                            id: albumsIcon
+                            anchors.left: parent.left
+                            anchors.leftMargin: 10
+                            anchors.verticalCenter: parent.verticalCenter
+                            height: 16
+                            width: 16
+                            source: "qrc:/gui/icons2/AlbumsIcons.png"
+                        }
+                        Text {
+                            text: "Albums"
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: albumsIcon.right
+                            anchors.leftMargin: 10
+                            font.pixelSize: 18
+                            font.family: "Quicksand"
+                        }
+                        MouseArea{
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: {
+                                myRect1.active = true;
+                                myRect2.active = false;
+                            }
+                            onEntered: albumsIcon.source = "qrc:/gui/icons2/AlbumsIcons.png"
+                            onExited: albumsIcon.source = "qrc:/gui/icons2/AlbumsIcons.png"
+                        }
+                    }
+                    DropShadow {
+                        anchors.fill: roundRect
+                        horizontalOffset: 0
+                        verticalOffset: 1
+                        radius: 5.0
+                        samples: 17
+                        color: "#22000000"
+                        source: roundRect
+                        visible: !myRect1.active
+                        z: 2
+                    }
+                    Rectangle {
+                        id: squareRect
+                        color: myRect1.active == true? "#d6d6d6" : "#FFFFFF"
+                        width: roundRect.radius
+                        anchors.bottom: roundRect.bottom
+                        anchors.top: roundRect.top
+                        anchors.right: roundRect.right
+                        z: 7
+
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked: {
+                                myRect1.active = true;
+                                myRect2.active = false;
+                            }
+                        }
+                    }
+                    DropShadow {
+                        anchors.fill: squareRect
+                        horizontalOffset: 0
+                        verticalOffset: 1
+                        radius: 5.0
+                        samples: 17
+                        color: "#22000000"
+                        source: squareRect
+                        visible: !myRect1.active
+                        z: 2
+                    }
+                }
+
+                // Button2
+                Rectangle {
+                    id: myRect2
+                    property bool active: false
+                    height: 30
+                    width: 120
+                    color: "Transparent"
+                    z: 7
+                    Rectangle {
+                        id: roundRect2
+                        color: myRect2.active == true? "#d6d6d6" : "#FFFFFF"
+                        height: 30
+                        width: 120
+                        radius: 2
+                        z: 7
+                        Image {
+                            id: cardssIcon
+                            anchors.left: parent.left
+                            anchors.leftMargin: 10
+                            anchors.verticalCenter: parent.verticalCenter
+                            height: 16
+                            width: 16
+                            source: "qrc:/gui/icons2/CardsIcon.png"
+                        }
+                        Text {
+                            text: "Cards"
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: cardssIcon.right
+                            anchors.leftMargin: 10
+                            font.pixelSize: 18
+                            font.family: "Quicksand"
+                        }
+                        MouseArea{
+                            anchors.fill: parent
+                            hoverEnabled : true
+                            onClicked: {
+                                myRect1.active = false;
+                                myRect2.active = true;
+                            }
+                            onEntered: cardssIcon.source = "qrc:/gui/icons2/CardsIcon.png"
+                            onExited: cardssIcon.source = "qrc:/gui/icons2/CardsIcon.png"
+                        }
+                    }
+                    DropShadow {
+                        anchors.fill: roundRect2
+                        horizontalOffset: 0
+                        verticalOffset: 1
+                        radius: 5.0
+                        samples: 17
+                        color: "#22000000"
+                        source: roundRect2
+                        visible: !myRect2.active
+                        z: 2
+                    }
+                    Rectangle {
+                        id: squareRect2
+                        color: myRect2.active == true? "#d6d6d6" : "#FFFFFF"
+                        width: roundRect2.radius
+                        anchors.bottom: roundRect2.bottom
+                        anchors.top: roundRect2.top
+                        anchors.left: roundRect2.left
+                        z: 7
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked: {
+                                myRect1.active = false;
+                                myRect2.active = true;
+                            }
+                        }
+                    }
+                    DropShadow {
+                        anchors.fill: squareRect2
+                        horizontalOffset: 0
+                        verticalOffset: 1
+                        radius: 5.0
+                        samples: 17
+                        color: "#22000000"
+                        source: squareRect2
+                        visible: !myRect2.active
+                        z: 2
+                    }
+                }
+            }
+
+
+            // Left Nav
+            Rectangle {
+                id: leftNav
+                anchors.top: view.top
+                anchors.left: view.left
+                anchors.topMargin: 30
+                anchors.leftMargin: 50
+                color: "#FFFFFF"
+                height: 30
+                width: 100
+                radius: 2
+                z: 7
+                Image {
+                    id: homeIcon
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+                    height: 18
+                    width: 18
+                    source: "qrc:/gui/icons/Home-50.png"
+                }
+                Text {
+                    text: "Home"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: homeIcon.right
+                    anchors.leftMargin: 10
+                    font.pixelSize: 18
+                    font.family: "Quicksand"
+                }
+
+                MouseArea {
+                    hoverEnabled: true
+                    anchors.fill: parent
+                    onEntered: homeIcon.source = "qrc:/gui/icons/Home Filled-50.png"
+                    onExited: homeIcon.source = "qrc:/gui/icons/Home-50.png"
+                }
+            }
+            DropShadow {
+                anchors.fill: leftNav
+                horizontalOffset: 0
+                verticalOffset: 1
+                radius: 5.0
+                samples: 17
+                color: "#22000000"
+                source: leftNav
+                z: 2
+            }
+
+
+            // Right Nav
+            Rectangle {
+                id: rightNav
+                color: "#FFFFFF"
+                anchors.top: view.top
+                anchors.right: view.right
+                anchors.topMargin: 30
+                anchors.rightMargin: 50
+                height: 30
+                width: 100
+                radius: 2
+                z: 7
+                Image {
+                    id: addIcon
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    anchors.verticalCenter: parent.verticalCenter
+                    height: 15
+                    width: 15
+                    source: "qrc:/gui/icons2/PlusIcon.png"
+                }
+                Text {
+                    text: "New"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: addIcon.right
+                    anchors.leftMargin: 10
+                    font.pixelSize: 18
+                    font.family: "Quicksand"
+                }
+                MouseArea {
+                    hoverEnabled: true
+                    anchors.fill: parent
+                    onEntered: addIcon.source = "qrc:/gui/icons2/PlusIcon.png"
+                    onExited: addIcon.source = "qrc:/gui/icons2/PlusIcon.png"
+                }
+            }
+            DropShadow {
+                anchors.fill: rightNav
+                horizontalOffset: 0
+                verticalOffset: 1
+                radius: 5.0
+                samples: 17
+                color: "#22000000"
+                source: rightNav
+                z: 2
+            }
+
+
+
+            SwipeView {
+                id: swipeView
+                anchors.top: view.top
+                anchors.left: view.left
+                anchors.right: view.right
+                anchors.bottom: view.bottom
+                anchors.topMargin: 100
+                currentIndex: window.currentPage
+
+                Page {
+                    id: homePage
+                    anchors.top: swipeView.top
+                    anchors.left: swipeView.left
+                    anchors.right: swipeView.right
+                    anchors.bottom: swipeView.bottom
+                    // Stats
+                    Rectangle {
+                        id: stats
+                        color: "#FFFFFF"
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.right: quickFeed.left
+                        anchors.topMargin: 80
+                        anchors.leftMargin: 50
+                        anchors.rightMargin: 30
+                        height: 200
+                        radius: 2
+                        z:2
+                    }
+                    DropShadow {
+                        anchors.fill: stats
+                        horizontalOffset: 0
+                        verticalOffset: 1
+                        radius: 5.0
+                        samples: 17
+                        color: "#22000000"
+                        source: stats
+                        z: 2
+                    }
+
+                    // Feed
+                    Rectangle {
+                        id: quickFeed
+                        color: "#FFFFFF"
+                        anchors.top: parent.top
+                        anchors.right: parent.right
+                        anchors.topMargin: 80
+                        anchors.rightMargin: 50
+                        height: 200
+                        width: 300
+                        radius: 2
+                        z:2
+                    }
+                    DropShadow {
+                        anchors.fill: quickFeed
+                        horizontalOffset: 0
+                        verticalOffset: 1
+                        radius: 5.0
+                        samples: 17
+                        color: "#22000000"
+                        source: quickFeed
+                        z: 2
+                    }
+
+                    Rectangle {
+                        width: 47
+                        anchors.left: view.left
+                        anchors.top: quickFeed.bottom
+                        height: scrollFeed.height
+                        color: view.color
+                        z: 3
+                    }
+
+                    // Feed
+                    Rectangle{
+                        id: scrollFeed
+                        width: parent.width
+                        anchors.top: quickFeed.bottom
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.topMargin: 30
+        //                anchors.leftMargin: 47
+        //                anchors.rightMargin: 50
+                        height: 500
+                        color: "transparent"
+                        clip: true
+                        z:2
+
+                        ListView {
+                            z:2
+        //                    movingHorizontally: true
+                            width: parent.width
+                            height: 450
+                            spacing: 260
+                            orientation: ListView.Horizontal
+                            model: CardItems {}
+                            delegate: CardDelegate {}
+                            header: Rectangle{
+                                color: "transparent"
+                                width: 50
+                            }
+                            footer: Rectangle{
+                                color: "transparent"
+                                width: 210
+                            }
+                        }
+                    }
+                }
+
+                Page {
+                    id: albumsPage
+                    Label {
+                        text: qsTr("Second page")
+                        anchors.centerIn: parent
+                    }
+                }
+
+                Page {
+                    id: cardsPage
+                    Label {
+                        text: qsTr("Second page")
+                        anchors.centerIn: parent
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+        }
+    }
+}

@@ -1,0 +1,60 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+    </qresource>
+    <qresource prefix="/Pages">
+        <file>AlbumsPage.qml</file>
+        <file>CardsPage.qml</file>
+        <file>HomePage.qml</file>
+        <file>Browse.qml</file>
+    </qresource>
+    <qresource prefix="/Items">
+        <file>ItemCard.qml</file>
+        <file>MainBar.qml</file>
+        <file>QuickNav.qml</file>
+        <file>SideBar.qml</file>
+        <file>TitleBar.qml</file>
+        <file>ViewSubMenu.qml</file>
+        <file>SortSubMenu.qml</file>
+        <file>BrowseSubMenu.qml</file>
+        <file>AddNewCard.qml</file>
+        <file>AddNewAlbum.qml</file>
+        <file>CardBackSideView.qml</file>
+        <file>CardBackSideEdit.qml</file>
+    </qresource>
+    <qresource prefix="/Delegates">
+        <file>CardDelegate.qml</file>
+        <file>CardItems.qml</file>
+        <file>NewsDelegate.qml</file>
+        <file>AlbumsView.qml</file>
+        <file>CardsView.qml</file>
+    </qresource>
+    <qresource prefix="/Config">
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+    <qresource prefix="/Icons">
+        <file>Icons/fontawesome-webfont.ttf</file>
+    </qresource>
+    <qresource prefix="/Cards">
+        <file>gui/cards/1.png</file>
+        <file>gui/cards/2.png</file>
+        <file>gui/cards/3.png</file>
+        <file>gui/cards/12.png</file>
+        <file>gui/cards/13.png</file>
+        <file>gui/cards/14.png</file>
+        <file>gui/cards/15.png</file>
+        <file>gui/cards/21.png</file>
+        <file>gui/Cards/card_backside.png</file>
+    </qresource>
+    <qresource prefix="/Views">
+        <file>CardsImageView.qml</file>
+        <file>AlbumsImageView.qml</file>
+        <file>CardsTableView.qml</file>
+        <file>AlbumsTableView.qml</file>
+        <file>SingleCardView.qml</file>
+    </qresource>
+    <qresource prefix="/gui">
+        <file>gui/elements/pokeLoader100.gif</file>
+        <file>gui/elements/emptyCard.png</file>
+    </qresource>
+</RCC>
